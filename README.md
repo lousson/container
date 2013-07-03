@@ -1,6 +1,9 @@
 Lousson: Context
 ================
 
+[![Build Status](https://travis-ci.org/lousson/context.png?branch=master)]
+(https://travis-ci.org/lousson/context)
+
 The `lousson/Lousson_Context` package is a portability layer for any
 dependency management system used within an application. It allows the
 authors of libraries to create packages that easily can get integrated
