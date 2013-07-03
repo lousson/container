@@ -29,9 +29,3 @@ psr0_autoloader_searchFirst(APP_TOPDIR);
 // step 3.2: add the paths of the dependencies
 psr0_autoloader_searchFirst(APP_LIBDIR ."/../tests/Lousson_Exception");
 
-// step 4: enable ContractLib if it is available
-if (class_exists('Phix_Project\ContractLib\Contract'))
-{
-        \Phix_Project\ContractLib\Contract::EnforceWrappedContracts();
-}
-
