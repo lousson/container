@@ -49,9 +49,9 @@ use Lousson\Error\RuntimeError;
 /**
  *  An exception type for runtime errors
  *
- *  The Lousson\Container\Error\ContainerRuntimeError exception is raised by
- *  the builtin and generic implementations of the container interfaces in
- *  case they encounter an error that is not caused by the caller.
+ *  The Lousson\Container\Error\ContainerRuntimeError exception is raised
+ *  by the builtin and generic implementations of the container interfaces
+ *  in case they encounter an error that is not caused by the caller.
  *
  *  @since      lousson/Lousson_Container-0.1.0
  *  @package    org.lousson.container

@@ -70,9 +70,8 @@ abstract class GenericContainerEntity
      *  it with the $container and $name as parameters (in that order) and
      *  using the return value to actually set up the aggregate.
      *
-     *  If the given $value is an aggregate instance already, or if invoking
-     *  it has returned such an object, it is left untouched and no further
-     *  aggregate layer is built.
+     *  If the given $value is an aggregate instance already, or if it's a
+     *  closure and returns such an object, no further layer is built.
      *
      *  @param  AnyContainer        $container      The item's container
      *  @param  string              $name           The item's name
@@ -90,7 +89,7 @@ abstract class GenericContainerEntity
             $value = $value($container, $name);
         }
         catch (\Lousson\Container\AnyContainerException $error) {
-            /* Nothing to do; should be allowed by the interface - if any */
+            /* Nothing to do; should be allowed by the interface */
             throw $error;
         }
         catch (\Exception $error) {
