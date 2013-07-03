@@ -91,7 +91,8 @@ abstract class AbstractContextTest extends PHPUnit_Framework_TestCase
         $value = $value;
         $test = $this;
         $callback = function($container, $name) use ($test, $value) {
-            $test->assertInstanceOf(self::I_CONTAINER, $container);
+            $interface = AbstractContextTest::I_CONTAINER;
+            $test->assertInstanceOf($interface, $container);
             $test->assertInternalType("string", $name);
             return $value;
         };
