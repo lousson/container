@@ -32,37 +32,37 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AbstractContextContainerTest class definition
+ *  Lousson\Container\AbstractContainerTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container;
 
 /** Dependencies: */
-use Lousson\Context\AbstractContextTest;
+use Lousson\Container\AbstractContainerEntityTest;
 
 /**
- *  Abstract test case for AnyContextContainer implementations
+ *  Abstract test case for AnyContainer implementations
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-abstract class AbstractContextContainerTest extends AbstractContextTest
+abstract class AbstractContainerTest extends AbstractContainerEntityTest
 {
     /**
      *  Obtain the container instance to test
      *
-     *  The getContainer() method returns the context container instance
+     *  The getContainer() method returns the container container instance
      *  used in the tests, representing the $items provided.
      *
      *  @param  array               $items          The items to represent
      *
-     *  @return \Lousson\Context\AnyContextContainer
-     *          A context container instance is returned on success
+     *  @return \Lousson\Container\AnyContainer
+     *          A container container instance is returned on success
      */
     abstract public function getContainer(array $items = array());
 
@@ -137,7 +137,7 @@ abstract class AbstractContextContainerTest extends AbstractContextTest
      *  Test the get() method
      *
      *  The testGetPresent() method is a test case for the get() method
-     *  provided by AnyContextContainer instances, operating with a $name
+     *  provided by AnyContainer instances, operating with a $name
      *  that is associated with an existing item.
      *
      *  The $items map is used to set up the container, and the retun value
@@ -159,21 +159,21 @@ abstract class AbstractContextContainerTest extends AbstractContextTest
     public function testGetPresent(array $items, $name, $expected)
     {
         $container = $this->getContainer($items);
-        $envelope = $this->invokeGet($container, $name);
+        $aggregate = $this->invokeGet($container, $name);
         $constraint = sprintf(
             "An invocation of %s::get()->asIs() must return the expected ".
             "value if the requested item (\"%s\") is present",
             get_class($container), $name
         );
 
-        $this->assertEquals($expected, $envelope->asIs(), $constraint);
+        $this->assertEquals($expected, $aggregate->asIs(), $constraint);
     }
 
     /**
      *  Test the get() method
      *
      *  The testGetPresent() method is a test case for the get() method
-     *  provided by AnyContextContainer instances, operating with a $name
+     *  provided by AnyContainer instances, operating with a $name
      *  that is not associated with an item.
      *
      *  The $items map is used to set up the container, and the retun value
@@ -195,32 +195,32 @@ abstract class AbstractContextContainerTest extends AbstractContextTest
     public function testGetAbsent(array $items, $name, $expected = null)
     {
         $container = $this->getContainer($items);
-        $envelope = $this->invokeGet($container, $name);
+        $aggregate = $this->invokeGet($container, $name);
         $constraint = sprintf(
             "An invocation of %s::get()->asIs() must return the expected ".
             "value if the requested item (\"%s\") is absent",
             get_class($container), $name
         );
 
-        $this->assertEquals($expected, $envelope->asIs(), $constraint);
+        $this->assertEquals($expected, $aggregate->asIs(), $constraint);
     }
 
     /**
      *  Invoke the get() method
      *
      *  The invokeGet() method is used internally to invoke the get()
-     *  method provided by implementations of the AnyContextContainer
+     *  method provided by implementations of the AnyContainer
      *  interface.
      *
      *  It is a wrapper that ensures correct behavior in general, e.g.
-     *  that the return value is an instance of the AnyContextEnvelope
+     *  that the return value is an instance of the AnyContainerAggregate
      *  interface.
      *
-     *  @param  AnyContextContainer $container      The container to invoke
+     *  @param  AnyContainer        $container      The container to invoke
      *  @param  string              $name           The name to pass on
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope instance is returned on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate instance is returned on success
      *
      *  @throws \PHPUnit_Framework_AssertionFailedError
      *          Raised in case an assertion has failed
@@ -228,18 +228,18 @@ abstract class AbstractContextContainerTest extends AbstractContextTest
      *  @throws \Exception
      *          Raised in case of an implementation error
      */
-    protected function invokeGet(AnyContextContainer $container, $name)
+    protected function invokeGet(AnyContainer $container, $name)
     {
         $constraint = sprintf(
             "The %s::get() method must return an instance of the %s ".
             "interface (invoked with: \"%s\")",
-            get_class($container), self::I_ENVELOPE, $name
+            get_class($container), self::I_AGGREGATE, $name
         );
 
-        $envelope = $container->get($name);
-        $this->assertInstanceOf(self::I_ENVELOPE, $envelope, $constraint);
+        $aggregate = $container->get($name);
+        $this->assertInstanceOf(self::I_AGGREGATE, $aggregate, $constraint);
 
-        return $envelope;
+        return $aggregate;
     }
 }
 

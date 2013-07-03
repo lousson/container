@@ -1,10 +1,10 @@
-Lousson: Context
+Lousson: Container
 ================
 
-[![Build Status](https://travis-ci.org/lousson/context.png?branch=master)]
-(https://travis-ci.org/lousson/context)
+[![Build Status](https://travis-ci.org/lousson/container.png?branch=master)]
+(https://travis-ci.org/lousson/container)
 
-The `lousson/Lousson_Context` package is a portability layer for any
+The `lousson/Lousson_Container` package is a portability layer for any
 dependency management system used within an application. It allows the
 authors of libraries to create packages that easily can get integrated
 with or even use the application context's facilities.
@@ -13,7 +13,7 @@ with or even use the application context's facilities.
 Dependencies
 ------------
 
-The `lousson/Lousson_Context` package itself only depends on PHP, a(ny)
+The `lousson/Lousson_Container` package itself only depends on PHP, a(ny)
 PSR-0 compatible autoloader and some other Lousson packages:
 
 - **PHP 5.3.0+**:                           http://www.php.net/
@@ -41,17 +41,17 @@ http://pear.lousson.org - thus, one can use the "pear" script to
 install any of them, e.g.:
 
 	pear channel-discover pear.lousson.org
-	pear install lousson/Lousson_Context
+	pear install lousson/Lousson_Container
 
 The complete sourcecode and version history is avialabe at GitHub.
-One may either visit http://github.com/lousson/context or clone
+One may either visit http://github.com/lousson/container or clone
 the source tree directly:
 
-	git clone https://github.com/lousson/context.git
+	git clone https://github.com/lousson/container.git
 
 GitHub is also used to track issues like bugs and feature-requests:
 
-	http://github.com/lousson/context/issues
+	http://github.com/lousson/container/issues
 
 Pull requests and other contributions are welcome!
 
@@ -60,7 +60,7 @@ Copyright & License
 -------------------
 
 Unless denoted otherwise, the following terms apply to all software
-provided within the `lousson/Lousson_Context` package:
+provided within the `lousson/Lousson_Container` package:
 
 	Copyright (c) 2013, The Lousson Project
 

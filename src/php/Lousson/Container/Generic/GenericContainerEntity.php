@@ -32,33 +32,81 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Error\ContextRuntimeError class definition
+ *  Lousson\Container\Generic\GenericContainerEntity class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Error;
+namespace Lousson\Container\Generic;
+
+/** Interfaces: */
+use Lousson\Container\AnyContainerAggregate;
+use Lousson\Container\AnyContainer;
 
 /** Dependencies: */
-use Lousson\Context\AnyContextException;
-use Lousson\Error\RuntimeError;
+use Lousson\Container\Generic\GenericContainerAggregate;
+
+/** Exceptions: */
+use Lousson\Container\Error\ContainerRuntimeError;
 
 /**
- *  An exception type for runtime errors
+ *  An abstract container entity implementation
  *
- *  The Lousson\Context\Error\ContextRuntimeError exception is raised by
- *  the builtin and generic implementations of the context interfaces in
- *  case they encounter an error that is not caused by the caller.
- *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-class ContextRuntimeError
-    extends RuntimeError
-    implements AnyContextException
+abstract class GenericContainerEntity
 {
+    /**
+     *  Aggregate a container aggregate
+     *
+     *  The agg() method is used internally to create an instance of the
+     *  AnyContainerAggregate interface from the given $value.
+     *
+     *  If the given $value is a closure instance, this includes invoking
+     *  it with the $container and $name as parameters (in that order) and
+     *  using the return value to actually set up the aggregate.
+     *
+     *  If the given $value is an aggregate instance already, or if invoking
+     *  it has returned such an object, it is left untouched and no further
+     *  aggregate layer is built.
+     *
+     *  @param  AnyContainer        $container      The item's container
+     *  @param  string              $name           The item's name
+     *  @param  mixed               $value          The item's value
+     *
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
+     *
+     *  @throws \Lousson\Container\AnyContainerException
+     *          Raised in case aggregating the aggregate has failed
+     */
+    protected function agg(AnyContainer $container, $name, $value)
+    {
+        if ($value instanceof \Closure) try {
+            $value = $value($container, $name);
+        }
+        catch (\Lousson\Container\AnyContainerException $error) {
+            /* Nothing to do; should be allowed by the interface - if any */
+            throw $error;
+        }
+        catch (\Exception $error) {
+            $class = get_class($error);
+            $message = "Could not prepare \"$name\": Caught $class";
+            $code = ContainerRuntimeError::E_UNKNOWN;
+            throw new ContainerRuntimeError($message, $code, $error);
+        }
+
+        if (!$value instanceof AnyContainerAggregate) {
+            $value = new GenericContainerAggregate(
+                $container, $name, $value
+            );
+        }
+
+        return $value;
+    }
 }
 

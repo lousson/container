@@ -32,88 +32,33 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Callback\CallbackContextContainer class definition
+ *  Lousson\Container\Error\ContainerRuntimeError class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Callback;
-
-/** Interfaces: */
-use Lousson\Context\AnyContextContainer;
-use Lousson\Context\AnyContextEnvelope;
+namespace Lousson\Container\Error;
 
 /** Dependencies: */
-use Lousson\Context\Generic\GenericContextEntity;
-use Lousson\Context\Generic\GenericContextEnvelope;
-use Closure;
+use Lousson\Container\AnyContainerException;
+use Lousson\Error\RuntimeError;
 
 /**
- *  A callback context container implementation
+ *  An exception type for runtime errors
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  The Lousson\Container\Error\ContainerRuntimeError exception is raised by
+ *  the builtin and generic implementations of the container interfaces in
+ *  case they encounter an error that is not caused by the caller.
+ *
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-class CallbackContextContainer
-    extends GenericContextEntity
-    implements AnyContextContainer
+class ContainerRuntimeError
+    extends RuntimeError
+    implements AnyContainerException
 {
-    /**
-     *  Create a container instance
-     *
-     *  The constructor requires the caller to provide a Closure $callback
-     *  for the container to invoke whenever an item is requested that does
-     *  not have been requested before.
-     *
-     *  @param  Closure             $callback       The container callback
-     */
-    public function __construct(Closure $callback)
-    {
-        $this->callback = $callback;
-    }
-
-    /**
-     *  Obtain a context envelope
-     *
-     *  The get() method is used to obtain a context envelope instance
-     *  for the item with the given $name. This envelope can then get used
-     *  to fetch the actual value of the item.
-     *
-     *  @param  string              $name           The name of the item
-     *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
-     *
-     *  @throws \Lousson\Context\AnyContextException
-     *          Raised in case retrieving the item has failed
-     */
-    public function get($name)
-    {
-        $name = (string) $name;
-
-        if (!isset($this->data[$name])) {
-            $envelope = $this->agg($this, $name, $this->callback);
-            $this->data[$name] = $envelope;
-        }
-
-        return $envelope;
-    }
-
-    /**
-     *  The container's callback
-     *
-     *  @var \Closure
-     */
-    private $callback;
-
-    /**
-     *  The container's data
-     *
-     *  @var array
-     */
-    private $data = array();
 }
 

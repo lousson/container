@@ -32,30 +32,88 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AnyContextException interface definition
+ *  Lousson\Container\Callback\CallbackContainer class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container\Callback;
+
+/** Interfaces: */
+use Lousson\Container\AnyContainer;
+use Lousson\Container\AnyContainerAggregate;
 
 /** Dependencies: */
-use Lousson\AnyException;
+use Lousson\Container\Generic\GenericContainerEntity;
+use Lousson\Container\Generic\GenericContainerAggregate;
+use Closure;
 
 /**
- *  An interface for context exceptions
+ *  A callback container container implementation
  *
- *  The Lousson\Context\AnyContextException interface is implemented by
- *  all exception types raised by methods declared by the interfaces in
- *  the Lousson\Context namespace.
- *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-interface AnyContextException extends AnyException
+class CallbackContainer
+    extends GenericContainerEntity
+    implements AnyContainer
 {
+    /**
+     *  Create a container instance
+     *
+     *  The constructor requires the caller to provide a Closure $callback
+     *  for the container to invoke whenever an item is requested that does
+     *  not have been requested before.
+     *
+     *  @param  Closure             $callback       The container callback
+     */
+    public function __construct(Closure $callback)
+    {
+        $this->callback = $callback;
+    }
+
+    /**
+     *  Obtain a container aggregate
+     *
+     *  The get() method is used to obtain a container aggregate instance
+     *  for the item with the given $name. This aggregate can then get used
+     *  to fetch the actual value of the item.
+     *
+     *  @param  string              $name           The name of the item
+     *
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
+     *
+     *  @throws \Lousson\Container\AnyContainerException
+     *          Raised in case retrieving the item has failed
+     */
+    public function get($name)
+    {
+        $name = (string) $name;
+
+        if (!isset($this->data[$name])) {
+            $aggregate = $this->agg($this, $name, $this->callback);
+            $this->data[$name] = $aggregate;
+        }
+
+        return $aggregate;
+    }
+
+    /**
+     *  The container's callback
+     *
+     *  @var \Closure
+     */
+    private $callback;
+
+    /**
+     *  The container's data
+     *
+     *  @var array
+     */
+    private $data = array();
 }
 

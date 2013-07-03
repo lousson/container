@@ -32,45 +32,45 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AnyContextContainer interface definition
+ *  Lousson\Container\AnyContainer interface definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container;
 
 /**
- *  An interface for context containers
+ *  An interface for container containers
  *
- *  The Lousson\Context\AnyContextContainer interface declares an API
- *  for context containers. Those are used to e.g. manage dependencies
+ *  The Lousson\Container\AnyContainer interface declares an API
+ *  for container containers. Those are used to e.g. manage dependencies
  *  when integrating packages with dependency injection frameworks, or
  *  when implementing custom dependency management solutions.
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-interface AnyContextContainer
+interface AnyContainer
 {
     /**
-     *  Obtain a context envelope
+     *  Obtain a container aggregate
      *
-     *  The get() method is used to obtain a context envelope instance
-     *  for the item with the given $name. This envelope can then get used
+     *  The get() method is used to obtain a container aggregate instance
+     *  for the item with the given $name. This aggregate can then get used
      *  to fetch the actual value of the item.
      *
      *  Note that the interface does not define whether the method must
-     *  return the same item or envelope when invoked multiple times!
+     *  return the same item or aggregate when invoked multiple times!
      *
      *  @param  string              $name           The name of the item
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case retrieving the item has failed
      */
     public function get($name);

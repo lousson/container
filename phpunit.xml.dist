@@ -15,9 +15,9 @@
             <directory suffix=".php">src/bin</directory>
             <directory suffix=".php">src/php</directory>
             <exclude>
-                <file>src/php/Lousson/Context/AnyContextContainer.php</file>
-                <file>src/php/Lousson/Context/AnyContextEnvelope.php</file>
-                <file>src/php/Lousson/Context/AnyContextException.php</file>
+                <file>src/php/Lousson/Container/AnyContainerAggregate.php</file>
+                <file>src/php/Lousson/Container/AnyContainerException.php</file>
+                <file>src/php/Lousson/Container/AnyContainer.php</file>
             </exclude>
         </whitelist>
     </filter>

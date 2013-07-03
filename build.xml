@@ -236,7 +236,7 @@
   <!-- Generate package docs -->
   <target name="phpdoc">
     <mkdir dir="${project.review.logsdir}" />
-    <exec command="phpdoc -d ${project.src.phpdir} -t ${project.review.docsdir}" logoutput="true"/>
+    <exec command="phpdoc -d ${project.src.phpdir} -t ${project.review.docsdir} --title ${project.name}" logoutput="true"/>
     <echo message="You will find the PHPDoc for your project at: ${project.review.docsdir}/index.html"/>
     <phingcallifexists target="local.phpdoc"/>
   </target>

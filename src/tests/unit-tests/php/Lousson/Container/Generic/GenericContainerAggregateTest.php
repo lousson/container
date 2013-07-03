@@ -32,63 +32,63 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Generic\GenericContextEnvelopeTest class definition
+ *  Lousson\Container\Generic\GenericContainerAggregateTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Generic;
+namespace Lousson\Container\Generic;
 
 /** Dependencies: */
-use Lousson\Context\AbstractContextEnvelopeTest;
-use Lousson\Context\Generic\GenericContextEnvelope;
+use Lousson\Container\AbstractContainerAggregateTest;
+use Lousson\Container\Generic\GenericContainerAggregate;
 
 /** Exceptions: */
-use Lousson\Context\Error\ContextRuntimeError;
+use Lousson\Container\Error\ContainerRuntimeError;
 use DomainException;
 
 /**
- *  A test case for the GenericContextEnvelope implementation
+ *  A test case for the GenericContainerAggregate implementation
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-final class GenericContextEnvelopeTest
-    extends AbstractContextEnvelopeTest
+final class GenericContainerAggregateTest
+    extends AbstractContainerAggregateTest
 {
     /**
-     *  Obtain the envelope instance to test
+     *  Obtain the aggregate instance to test
      *
-     *  The getEnvelope() method returns the context envelope instance used
+     *  The getAggregate() method returns the container aggregate instance used
      *  in the tests, representing the $item provided.
      *
      *  @param  mixed               $item           The item to represent
      *
-     *  @return \Lousson\Context\Generic\GenericContextEnvelope
-     *          A context envelope instance is returned on success
+     *  @return \Lousson\Container\Generic\GenericContainerAggregate
+     *          A container aggregate instance is returned on success
      */
-    public function getEnvelope($item)
+    public function getAggregate($item)
     {
         $container = $this->getMock(self::I_CONTAINER);
-        $envelope = new GenericContextEnvelope($container, "test", $item);
+        $aggregate = new GenericContainerAggregate($container, "test", $item);
 
-        return $envelope;
+        return $aggregate;
     }
 
     /**
      *  Test the asArray() method
      *
-     *  The testAsArray() method is a test case for the envelope's
+     *  The testAsArray() method is a test case for the aggregate's
      *  asArray() method, verifying that exceptions raised by Traverable
      *  objects are handled correctly.
      *
-     *  @expectedException      Lousson\Context\Error\ContextRuntimeError
+     *  @expectedException  Lousson\Container\Error\ContainerRuntimeError
      *  @test
      *
-     *  @throws \Lousson\Context\Error\ContextRuntimeError
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
      *          Raised in case the test is successful
      *
      *  @throws \Exception
@@ -100,23 +100,23 @@ final class GenericContextEnvelopeTest
         $object
             ->expects($this->any())
             ->method("getIterator")
-            ->will($this->throwException(new ContextRuntimeError));
+            ->will($this->throwException(new ContainerRuntimeError));
 
-        $envelope = $this->getEnvelope($object);
-        $envelope->asArray();
+        $aggregate = $this->getAggregate($object);
+        $aggregate->asArray();
     }
 
     /**
      *  Test the asArray() method
      *
-     *  The testAsArray() method is a test case for the envelope's
+     *  The testAsArray() method is a test case for the aggregate's
      *  asArray() method, verifying that exceptions raised by Traverable
      *  objects are handled correctly.
      *
-     *  @expectedException      Lousson\Context\Error\ContextRuntimeError
+     *  @expectedException  Lousson\Container\Error\ContainerRuntimeError
      *  @test
      *
-     *  @throws \Lousson\Context\Error\ContextRuntimeError
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
      *          Raised in case the test is successful
      *
      *  @throws \Exception
@@ -130,21 +130,21 @@ final class GenericContextEnvelopeTest
             ->method("getIterator")
             ->will($this->throwException(new DomainException));
 
-        $envelope = $this->getEnvelope($object);
-        $envelope->asArray();
+        $aggregate = $this->getAggregate($object);
+        $aggregate->asArray();
     }
 
     /**
      *  Test the asObject() method
      *
-     *  The testAsObject() method is a test case for the envelope's
+     *  The testAsObject() method is a test case for the aggregate's
      *  asObject() method, verifying that requesting an unmatched class
      *  instance raises the appropriate exception.
      *
-     *  @expectedException      Lousson\Context\Error\ContextRuntimeError
+     *  @expectedException  Lousson\Container\Error\ContainerRuntimeError
      *  @test
      *
-     *  @throws \Lousson\Context\Error\ContextRuntimeError
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
      *          Raised in case the test is successful
      *
      *  @throws \Exception
@@ -152,8 +152,8 @@ final class GenericContextEnvelopeTest
      */
     public function testAsObjectError()
     {
-        $envelope = $this->getEnvelope($this);
-        $envelope->asObject("Exception");
+        $aggregate = $this->getAggregate($this);
+        $aggregate->asObject("Exception");
     }
 }
 

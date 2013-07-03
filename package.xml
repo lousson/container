@@ -14,7 +14,7 @@
   <channel>${project.channel}</channel>
   <summary>dependency management portability layer</summary>
   <description>
-    The lousson/Lousson_Context package is a portability layer for any
+    The lousson/Lousson_Container package is a portability layer for any
     dependency management system used within an application. It allows the
     authors of libraries to create packages that easily can get integrated
     with or even use the context's facilities
