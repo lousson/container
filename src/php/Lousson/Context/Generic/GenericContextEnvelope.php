@@ -273,7 +273,7 @@ class GenericContextEnvelope
             $res = $this->value;
         }
         else {
-            $res = $this->fail("Could not cast %s to integer");
+            $res = $this->fail("Could not cast %s to resource");
         }
 
         return $res;
