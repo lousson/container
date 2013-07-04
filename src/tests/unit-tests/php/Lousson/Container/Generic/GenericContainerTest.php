@@ -32,47 +32,47 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Generic\GenericContextContainerTest class definition
+ *  Lousson\Container\Generic\GenericContainerTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Generic;
+namespace Lousson\Container\Generic;
 
 /** Dependencies: */
-use Lousson\Context\AbstractContextContainerTest;
-use Lousson\Context\Generic\GenericContextContainer;
+use Lousson\Container\AbstractContainerTest;
+use Lousson\Container\Generic\GenericContainer;
 
 /** Exceptions: */
-use Lousson\Context\Error\ContextRuntimeError;
+use Lousson\Container\Error\ContainerRuntimeError;
 use DomainException;
 
 /**
- *  A test case for the GenericContextContainer implementation
+ *  A test case for the GenericContainer implementation
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-final class GenericContextContainerTest
-    extends AbstractContextContainerTest
+final class GenericContainerTest
+    extends AbstractContainerTest
 {
     /**
      *  Obtain the container instance to test
      *
-     *  The getContainer() method returns the context container instance
+     *  The getContainer() method returns the container container instance
      *  used in the tests, representing the $items provided.
      *
      *  @param  array               $items          The items to represent
      *
-     *  @return \Lousson\Context\Generic\GenericContextContainerr
-     *          A context container instance is returned on success
+     *  @return \Lousson\Container\Generic\GenericContainerr
+     *          A container container instance is returned on success
      */
     public function getContainer(array $items = array())
     {
-        $container = new GenericContextContainer($items);
+        $container = new GenericContainer($items);
         return $container;
     }
 
@@ -80,7 +80,7 @@ final class GenericContextContainerTest
      *  Test the set() method
      *
      *  The testSetPresent() method is a test case for the set() method
-     *  provided by GenericContextContainer instances, operating with a $name
+     *  provided by GenericContainer instances, operating with a $name
      *  that is associated with an existing item.
      *
      *  The $items map is used to set up the container, and the retun value
@@ -105,10 +105,10 @@ final class GenericContextContainerTest
         $container = $this->getContainer($items);
         $container->set($name, $expected);
 
-        $envelope = $this->invokeGet($container, $name);
+        $aggregate = $this->invokeGet($container, $name);
         $this->assertEquals(
-            $expected, $envelope->asIs(),
-            "The envelope returned by GenericContextContainer::get() ".
+            $expected, $aggregate->asIs(),
+            "The aggregate returned by GenericContainer::get() ".
             "hold the item set() before"
         );
     }
@@ -117,7 +117,7 @@ final class GenericContextContainerTest
      *  Test the set() method
      *
      *  The testSetPresent() method is a test case for the set() method
-     *  provided by GenericContextContainer instances, operating with a $name
+     *  provided by GenericContainer instances, operating with a $name
      *  that is not associated with an item.
      *
      *  The $items map is used to set up the container, and the retun value
@@ -142,10 +142,10 @@ final class GenericContextContainerTest
         $container = $this->getContainer($items);
         $container->set($name, $expected);
 
-        $envelope = $this->invokeGet($container, $name);
+        $aggregate = $this->invokeGet($container, $name);
         $this->assertEquals(
-            $expected, $envelope->asIs(),
-            "The envelope returned by GenericContextContainer::get() ".
+            $expected, $aggregate->asIs(),
+            "The aggregate returned by GenericContainer::get() ".
             "hold the item set() before"
         );
     }
@@ -154,7 +154,7 @@ final class GenericContextContainerTest
      *  Test the get() method
      *
      *  The testGetCallback() method is a test case for the get() method
-     *  provided by GenericContextContainer instances, operating much like
+     *  provided by GenericContainer instances, operating much like
      *  testGetPresent() but using closures to wrap the $items.
      *
      *  @param  array               $items          The items to set up
@@ -183,7 +183,7 @@ final class GenericContextContainerTest
      *  Test the get() method
      *
      *  The testGetException() method is a test case for the get() method,
-     *  verifying that exceptions beside those implementing the context
+     *  verifying that exceptions beside those implementing the container
      *  exception interface are handled properly.
      *
      *  @param  array               $items          The items to set up
@@ -191,10 +191,10 @@ final class GenericContextContainerTest
      *  @param  mixed               $expected       The expected value
      *
      *  @dataProvider       provideGetPresentTestParameters
-     *  @expectedException  Lousson\Context\Error\ContextRuntimeError
+     *  @expectedException  Lousson\Container\Error\ContainerRuntimeError
      *  @test
      *
-     *  @throws \Lousson\Context\Error\ContextRuntimeError
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
      *          Raised in case the test is successful
      *
      *  @throws \Exception
@@ -213,17 +213,17 @@ final class GenericContextContainerTest
      *  Test the get() method
      *
      *  The testGetError() method is a test case for the get() method,
-     *  verifying that context errors are handled properly.
+     *  verifying that container errors are handled properly.
      *
      *  @param  array               $items          The items to set up
      *  @param  string              $name           The name to query for
      *  @param  mixed               $expected       The expected value
      *
      *  @dataProvider       provideGetPresentTestParameters
-     *  @expectedException  Lousson\Context\Error\ContextRuntimeError
+     *  @expectedException  Lousson\Container\Error\ContainerRuntimeError
      *  @test
      *
-     *  @throws \Lousson\Context\Error\ContextRuntimeError
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
      *          Raised in case the test is successful
      *
      *  @throws \Exception
@@ -232,7 +232,7 @@ final class GenericContextContainerTest
     public function testGetError(array $items, $name, $expected)
     {
         $items[$name] = function($container, $name) {
-            throw new ContextRuntimeError("Foo: $name");
+            throw new ContainerRuntimeError("Foo: $name");
         };
 
         $this->testGetPresent($items, $name, $expected);

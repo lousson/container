@@ -32,34 +32,34 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AnyContextEnvelope interface definition
+ *  Lousson\Container\AnyContainerAggregate interface definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container;
 
 /**
- *  An interface for context envelopes
+ *  An interface for container aggregates
  *
- *  The Lousson\Context\AnyContextEnvelope interface declares an API for
- *  context envelopes: Wrapper around items retrieved from containers, used
- *  to perform type verification and conversion, as well as providing easy
- *  to use fallback mechanisms.
+ *  The Lousson\Container\AnyContainerAggregate interface declares an API
+ *  for container aggregates: Wrappers around container items.
+ *  Those are used to perform type verification and conversion, as well as
+ *  providing easy to use fallback mechanisms.
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-interface AnyContextEnvelope
+interface AnyContainerAggregate
 {
     /**
      *  Obtain the plain item value
      *
      *  The asIs() method is used to obtain the plain value of the item
-     *  held by the context envelope, without any further validation.
+     *  held by the container aggregate, without any further validation.
      *
      *  @return mixed
      *          The plain item value is returned on success
@@ -86,7 +86,7 @@ interface AnyContextEnvelope
      *  @return int
      *          An integer is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a scalar
      */
     public function asInt();
@@ -100,7 +100,7 @@ interface AnyContextEnvelope
      *  @return float
      *          A floating point number is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a scalar
      */
     public function asFloat();
@@ -114,7 +114,7 @@ interface AnyContextEnvelope
      *  @return string
      *          A string is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the string conversion has failed
      */
     public function asString();
@@ -128,7 +128,7 @@ interface AnyContextEnvelope
      *  @return array
      *          An array is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the array conversion has failed
      */
     public function asArray();
@@ -145,7 +145,7 @@ interface AnyContextEnvelope
      *  @return object
      *          An object instance is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the helt item is not an object or not an
      *          instance of the requested $class
      */
@@ -160,7 +160,7 @@ interface AnyContextEnvelope
      *  @return resource
      *          A resource is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a resource descriptor
      */
     public function asResource();
@@ -168,18 +168,18 @@ interface AnyContextEnvelope
     /**
      *  Provide a fallback item
      *
-     *  The orFallback() method either returns the context envelope
+     *  The orFallback() method either returns the container aggregate
      *  instance it has been invoked on (in case the held item is not NULL)
      *  or some instance that represents the $fallback provided.
      *
-     *  Note that the $fallback will be evaluated like any other context
+     *  Note that the $fallback will be evaluated like any other container
      *  item: Closures will get invoked, provided with with the anchestor
-     *  container as parameter, whilst envelopes will get passed through.
+     *  container as parameter, whilst aggregates will get passed through.
      *
      *  @param  mixed               $fallback           The fallback item
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A dependenvy envelope is returned on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A dependenvy aggregate is returned on success
      *
      *  @throws \Exception
      *          The $fallback, if invoked, may raise any exception
@@ -189,12 +189,12 @@ interface AnyContextEnvelope
     /**
      *  Permit a NULL item
      *
-     *  The orNull() method either returns the context envelope instance
+     *  The orNull() method either returns the container aggregate instance
      *  it has been invoked on, in case the held item is not NULL, or some
      *  instance that returns NULL when an as*() method is invoked.
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
      */
     public function orNull();
 }

@@ -32,79 +32,30 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Generic\GenericContextEntity class definition
+ *  Lousson\Container\AnyContainerException interface definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Generic;
-
-/** Interfaces: */
-use Lousson\Context\AnyContextContainer;
-use Lousson\Context\AnyContextEnvelope;
+namespace Lousson\Container;
 
 /** Dependencies: */
-use Lousson\Context\Generic\GenericContextEnvelope;
-
-/** Exceptions: */
-use Lousson\Context\Error\ContextRuntimeError;
+use Lousson\AnyException;
 
 /**
- *  An abstract context entity implementation
+ *  An interface for container exceptions
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  The Lousson\Container\AnyContainerException interface is implemented by
+ *  all exception types raised by methods declared by the interfaces in
+ *  the Lousson\Container namespace.
+ *
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-abstract class GenericContextEntity
+interface AnyContainerException extends AnyException
 {
-    /**
-     *  Aggregate a context envelope
-     *
-     *  The agg() method is used internally to aggregate an instance of the
-     *  AnyContextEnvelope interface from the given $value.
-     *
-     *  If the given $value is a closure instance, this includes invoking
-     *  it with the $container and $name as parameters (in that order) and
-     *  using the return value to actually set up the envelope.
-     *
-     *  If the given $value is an envelope instance already, or if invoking
-     *  it has returned such an object, it is left untouched and no further
-     *  envelope layer is built.
-     *
-     *  @param  AnyContextContainer $container      The item's container
-     *  @param  string              $name           The item's name
-     *  @param  mixed               $value          The item's value
-     *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
-     *
-     *  @throws \Lousson\Context\AnyContextException
-     *          Raised in case aggregating the envelope has failed
-     */
-    protected function agg(AnyContextContainer $container, $name, $value)
-    {
-        if ($value instanceof \Closure) try {
-            $value = $value($container, $name);
-        }
-        catch (\Lousson\Context\AnyContextException $error) {
-            /* Nothing to do; should be allowed by the interfac - if any */
-            throw $error;
-        }
-        catch (\Exception $error) {
-            $class = get_class($error);
-            $message = "Could not prepare \"$name\": Caught $class";
-            $code = ContextRuntimeError::E_UNKNOWN;
-            throw new ContextRuntimeError($message, $code, $error);
-        }
-
-        if (!$value instanceof AnyContextEnvelope) {
-            $value = new GenericContextEnvelope($container, $name, $value);
-        }
-
-        return $value;
-    }
 }
 

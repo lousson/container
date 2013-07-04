@@ -32,49 +32,49 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Generic\GenericContextEnvelope class definition
+ *  Lousson\Container\Generic\GenericContainerAggregate class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Generic;
+namespace Lousson\Container\Generic;
 
 /** Interfaces: */
-use Lousson\Context\AnyContextContainer;
-use Lousson\Context\AnyContextEnvelope;
+use Lousson\Container\AnyContainer;
+use Lousson\Container\AnyContainerAggregate;
 
 /** Dependencies: */
-use Lousson\Context\Generic\GenericContextEntity;
+use Lousson\Container\Generic\GenericContainerEntity;
 
 /** Exceptions: */
-use Lousson\Context\Error\ContextRuntimeError;
+use Lousson\Container\Error\ContainerRuntimeError;
 
 /**
- *  A generic context envelope implementation
+ *  A generic container aggregate implementation
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-class GenericContextEnvelope
-    extends GenericContextEntity
-    implements AnyContextEnvelope
+class GenericContainerAggregate
+    extends GenericContainerEntity
+    implements AnyContainerAggregate
 {
     /**
-     *  Create an envelope instance
+     *  Create an aggregate instance
      *
      *  Beside the $name and $value of the item to hold, the constructor
      *  requires the caller to provide a reference to the container the
      *  item is associated with.
      *
-     *  @param  AnyContextContainer     $container  The item's container
+     *  @param  AnyContainer            $container  The item's container
      *  @param  string                  $name       The item's name
      *  @param  mixed                   $value      The item's value
      */
     public function __construct(
-        AnyContextContainer $container,
+        AnyContainer $container,
         $name,
         $value
     ) {
@@ -87,7 +87,7 @@ class GenericContextEnvelope
      *  Obtain the plain item value
      *
      *  The asItIs() method is used to obtain the plain value of the item
-     *  held by the context envelope, without any further validation.
+     *  held by the container aggregate, without any further validation.
      *
      *  @return mixed
      *          The plain item value is returned on success
@@ -127,7 +127,7 @@ class GenericContextEnvelope
      *  @return int
      *          An integer is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a scalar
      */
     public function asInt()
@@ -151,7 +151,7 @@ class GenericContextEnvelope
      *  @return float
      *          A floating point number is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a scalar
      */
     public function asFloat()
@@ -175,7 +175,7 @@ class GenericContextEnvelope
      *  @return string
      *          A string is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the string conversion has failed
      */
     public function asString()
@@ -200,7 +200,7 @@ class GenericContextEnvelope
      *  @return array
      *          An array is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the array conversion has failed
      */
     public function asArray()
@@ -215,8 +215,8 @@ class GenericContextEnvelope
             $class = get_class($error);
             $base = get_class($this->value);
             $message = "Could not cast $base to array: Caught $class";
-            $code = ContextRuntimeError::E_UNKNOWN;
-            throw new ContextRuntimeError($message, $code, $error);
+            $code = ContainerRuntimeError::E_UNKNOWN;
+            throw new ContainerRuntimeError($message, $code, $error);
         }
         else {
             $arr = $this->fail("Could not cast %s to array");
@@ -237,7 +237,7 @@ class GenericContextEnvelope
      *  @return object
      *          An object instance is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the helt item is not an object or not an
      *          instance of the requested $class
      */
@@ -264,7 +264,7 @@ class GenericContextEnvelope
      *  @return resource
      *          A resource is returned on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case the held item is not a resource descriptor
      */
     public function asResource()
@@ -282,55 +282,55 @@ class GenericContextEnvelope
     /**
      *  Provide a fallback item
      *
-     *  The orFallback() method either returns the context envelope
+     *  The orFallback() method either returns the container aggregate
      *  instance it has been invoked on (in case the held item is not NULL)
      *  or some instance that represents the $fallback provided.
      *
-     *  Note that the $fallback will be evaluated like any other context
+     *  Note that the $fallback will be evaluated like any other container
      *  item: Closures will get invoked, provided with with the anchestor
-     *  container as parameter, whilst envelopes will get passed through.
+     *  container as parameter, whilst aggregates will get passed through.
      *
      *  @param  mixed               $fallback           The fallback item
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A dependenvy envelope is returned on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A dependenvy aggregate is returned on success
      *
      *  @throws \Exception
      *          The $fallback, if invoked, may raise any exception
      */
     public function orFallback($fallback)
     {
-        $envelope = $this;
+        $aggregate = $this;
 
         if (!isset($this->value)) {
-            $envelope = $this->agg(
+            $aggregate = $this->agg(
                 $this->container, $this->name, $fallback
             );
         }
 
-        return $envelope;
+        return $aggregate;
     }
 
     /**
      *  Permit a NULL item
      *
-     *  The orNull() method either returns the context envelope instance
+     *  The orNull() method either returns the container aggregate instance
      *  it has been invoked on, in case the held item is not NULL, or some
      *  instance that returns NULL when an as*() method is invoked.
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
      */
     public function orNull()
     {
-        $envelope = $this;
+        $aggregate = $this;
 
         if (!isset($this->value)) {
-            $envelope = new self($this->container, $this->name, null);
-            $envelope->required = false;
+            $aggregate = new self($this->container, $this->name, null);
+            $aggregate->required = false;
         }
 
-        return $envelope;
+        return $aggregate;
     }
 
     /**
@@ -343,7 +343,7 @@ class GenericContextEnvelope
      *
      *  @param  string              $message            The error format
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case NULL is not an appropriate return value
      */
     private function fail($message)
@@ -358,7 +358,7 @@ class GenericContextEnvelope
         $type = is_object($item)? get_class($item): gettype($item);
         $note = sprintf($message, $type);
 
-        throw new ContextRuntimeError(
+        throw new ContainerRuntimeError(
             "Could not get \"{$this->name}\" from {$base}: {$note}"
         );
     }
@@ -366,7 +366,7 @@ class GenericContextEnvelope
     /**
      *  The container the item is associated with
      *
-     *  @var \Lousson\Context\AnyContextContainer
+     *  @var \Lousson\Container\AnyContainer
      */
     private $container;
 
@@ -385,7 +385,7 @@ class GenericContextEnvelope
     private $value;
 
     /**
-     *  The envelope's required flag
+     *  The aggregate's required flag
      *
      *  @var bool
      */

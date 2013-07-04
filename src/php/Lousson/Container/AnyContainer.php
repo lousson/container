@@ -32,88 +32,47 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Callback\CallbackContextContainer class definition
+ *  Lousson\Container\AnyContainer interface definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Callback;
-
-/** Interfaces: */
-use Lousson\Context\AnyContextContainer;
-use Lousson\Context\AnyContextEnvelope;
-
-/** Dependencies: */
-use Lousson\Context\Generic\GenericContextEntity;
-use Lousson\Context\Generic\GenericContextEnvelope;
-use Closure;
+namespace Lousson\Container;
 
 /**
- *  A callback context container implementation
+ *  An interface for container containers
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  The Lousson\Container\AnyContainer interface declares an API
+ *  for container containers. Those are used to e.g. manage dependencies
+ *  when integrating packages with dependency injection frameworks, or
+ *  when implementing custom dependency management solutions.
+ *
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-class CallbackContextContainer
-    extends GenericContextEntity
-    implements AnyContextContainer
+interface AnyContainer
 {
     /**
-     *  Create a container instance
+     *  Obtain a container aggregate
      *
-     *  The constructor requires the caller to provide a Closure $callback
-     *  for the container to invoke whenever an item is requested that does
-     *  not have been requested before.
-     *
-     *  @param  Closure             $callback       The container callback
-     */
-    public function __construct(Closure $callback)
-    {
-        $this->callback = $callback;
-    }
-
-    /**
-     *  Obtain a context envelope
-     *
-     *  The get() method is used to obtain a context envelope instance
-     *  for the item with the given $name. This envelope can then get used
+     *  The get() method is used to obtain a container aggregate instance
+     *  for the item with the given $name. This aggregate can then get used
      *  to fetch the actual value of the item.
+     *
+     *  Note that the interface does not define whether the method must
+     *  return the same item or aggregate when invoked multiple times!
      *
      *  @param  string              $name           The name of the item
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope is returend on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate is returend on success
      *
-     *  @throws \Lousson\Context\AnyContextException
+     *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case retrieving the item has failed
      */
-    public function get($name)
-    {
-        $name = (string) $name;
-
-        if (!isset($this->data[$name])) {
-            $envelope = $this->agg($this, $name, $this->callback);
-            $this->data[$name] = $envelope;
-        }
-
-        return $envelope;
-    }
-
-    /**
-     *  The container's callback
-     *
-     *  @var \Closure
-     */
-    private $callback;
-
-    /**
-     *  The container's data
-     *
-     *  @var array
-     */
-    private $data = array();
+    public function get($name);
 }
 

@@ -32,39 +32,40 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AbstractContextEnvelopeTest class definition
+ *  Lousson\Container\AbstractContainerAggregateTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container;
 
 /** Dependencies: */
-use Lousson\Context\AbstractContextTest;
+use Lousson\Container\AbstractContainerEntityTest;
 
 /**
- *  Abstract test case for AnyContextEnvelope implementations
+ *  Abstract test case for AnyContainerAggregate implementations
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-abstract class AbstractContextEnvelopeTest extends AbstractContextTest
+abstract class AbstractContainerAggregateTest
+    extends AbstractContainerEntityTest
 {
     /**
-     *  Obtain the envelope instance to test
+     *  Obtain the aggregate instance to test
      *
-     *  The getEnvelope() method returns the context envelope instance used
+     *  The getAggregate() method returns the container aggregate instance used
      *  in the tests, representing the $item provided.
      *
      *  @param  mixed               $item           The item to represent
      *
-     *  @return \Lousson\Context\AnyContextEnvelope
-     *          A context envelope instance is returned on success
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *          A container aggregate instance is returned on success
      */
-    abstract public function getEnvelope($item);
+    abstract public function getAggregate($item);
 
     /**
      *  Data provider to the testAsIs() method
@@ -286,7 +287,7 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
     /**
      *  Test the asIs() method
      *
-     *  The testAsIs() method is a test case for the envelope's
+     *  The testAsIs() method is a test case for the aggregate's
      *  asIs() method.
      *
      *  @param  mixed               $item           The input item
@@ -303,14 +304,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsIs($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asIs", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asIs", $expected);
     }
 
     /**
      *  Test the asBool() method
      *
-     *  The testAsBool() method is a test case for the envelope's
+     *  The testAsBool() method is a test case for the aggregate's
      *  asBool() method.
      *
      *  @param  mixed               $item           The input item
@@ -327,14 +328,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsBool($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asBool", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asBool", $expected);
     }
 
     /**
      *  Test the asInt() method
      *
-     *  The testAsInt() method is a test case for the envelope's
+     *  The testAsInt() method is a test case for the aggregate's
      *  asInt() method.
      *
      *  @param  mixed               $item           The input item
@@ -351,14 +352,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsInt($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asInt", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asInt", $expected);
     }
 
     /**
      *  Test the asFloat() method
      *
-     *  The testAsFloat() method is a test case for the envelope's
+     *  The testAsFloat() method is a test case for the aggregate's
      *  asFloat() method.
      *
      *  @param  mixed               $item           The input item
@@ -375,14 +376,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsFloat($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asFloat", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asFloat", $expected);
     }
 
     /**
      *  Test the asString() method
      *
-     *  The testAsString() method is a test case for the envelope's
+     *  The testAsString() method is a test case for the aggregate's
      *  asString() method.
      *
      *  @param  mixed               $item           The input item
@@ -399,14 +400,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsString($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asString", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asString", $expected);
     }
 
     /**
      *  Test the asArray() method
      *
-     *  The testAsArray() method is a test case for the envelope's
+     *  The testAsArray() method is a test case for the aggregate's
      *  asArray() method.
      *
      *  @param  mixed               $item           The input item
@@ -423,14 +424,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsArray($item, array $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asArray", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asArray", $expected);
     }
 
     /**
      *  Test the asObject() method
      *
-     *  The testAsObject() method is a test case for the envelope's
+     *  The testAsObject() method is a test case for the aggregate's
      *  asObject() method.
      *
      *  @param  mixed               $item           The input item
@@ -448,13 +449,13 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsObject($item, $expected, $class)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asObject", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asObject", $expected);
 
-        $object = $envelope->asObject($class);
+        $object = $aggregate->asObject($class);
         $constraint = sprintf(
             "The %s::asObject() method must return the expected object ".
-            "instance", get_class($envelope)
+            "instance", get_class($aggregate)
         );
 
         $this->assertEquals($expected, $object, $constraint);
@@ -463,7 +464,7 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
     /**
      *  Test the asResource() method
      *
-     *  The testAsResource() method is a test case for the envelope's
+     *  The testAsResource() method is a test case for the aggregate's
      *  asResource() method.
      *
      *  @param  mixed               $item           The input item
@@ -480,14 +481,14 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testAsResource($item, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $this->invokeAs($envelope, "asResource", $expected);
+        $aggregate = $this->getAggregate($item);
+        $this->invokeAs($aggregate, "asResource", $expected);
     }
 
     /**
      *  Test the orFallback() method
      *
-     *  The testOrFallback() method is a test case for the envelope's
+     *  The testOrFallback() method is a test case for the aggregate's
      *  orFallback() method.
      *
      *  @param  mixed               $item           The input item
@@ -505,11 +506,11 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testOrFallback($item, $fallback, $expected)
     {
-        $envelope = $this->getEnvelope($item);
-        $value = $envelope->orFallback($fallback)->asIs();
+        $aggregate = $this->getAggregate($item);
+        $value = $aggregate->orFallback($fallback)->asIs();
         $constraint = sprintf(
             "The invocation of %s::orFallback()->asIs() must return ".
-            "the expected fallback value", get_class($envelope)
+            "the expected fallback value", get_class($aggregate)
         );
 
         $this->assertEquals($expected, $value, $constraint);
@@ -518,7 +519,7 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
     /**
      *  Test the orNull() method
      *
-     *  The testOrNull() method is a test case for the envelope's
+     *  The testOrNull() method is a test case for the aggregate's
      *  orNull() method.
      *
      *  @param  mixed               $item           The input item
@@ -535,11 +536,11 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      */
     public function testOrNull($item, $method)
     {
-        $envelope = $this->getEnvelope($item);
-        $value = $envelope->orNull()->$method();
+        $aggregate = $this->getAggregate($item);
+        $value = $aggregate->orNull()->$method();
         $constraint = sprintf(
             "The invocation %s::orNull()->%s() must return NULL",
-            get_class($envelope), $method
+            get_class($aggregate), $method
         );
 
         $this->assertNull($value, $constraint);
@@ -549,12 +550,12 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      *  Invoke an as*() method
      *
      *  The invokeAs() method is used internally to invoke the $method
-     *  provided by the $envelope implementation, verifying the result
+     *  provided by the $aggregate implementation, verifying the result
      *  matches the $expected value (if any).
      *
-     *  @param  AnyContextEnvelope  $envelope       The envelope to use
-     *  @param  string              $method         The method to invoke
-     *  @param  mixed               $expected       The expected value
+     *  @param  AnyContainerAggregate   $aggregate  The aggregate to use
+     *  @param  string                  $method     The method to invoke
+     *  @param  mixed                   $expected   The expected value
      *
      *  @throws \PHPUnit_Framework_AssertionFailedError
      *          Raised in case an assertion has failed
@@ -563,17 +564,17 @@ abstract class AbstractContextEnvelopeTest extends AbstractContextTest
      *          Raised in case of an internal error
      */
     protected function invokeAs(
-        AnyContextEnvelope $envelope,
+        AnyContainerAggregate $aggregate,
         $method,
         $expected = null
     ) {
-        $value = $envelope->$method();
+        $value = $aggregate->$method();
 
         if (3 <= func_num_args()) {
             $this->assertEquals(
                 $expected, $value, sprintf(
                 "The %s::%s() method must return the expected value",
-                get_class($envelope), $method
+                get_class($aggregate), $method
             ));
         }
 
