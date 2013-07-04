@@ -32,72 +32,48 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\AbstractContextTest class definition
+ *  Lousson\Container\Callback\CallbackContainerTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context;
+namespace Lousson\Container\Callback;
 
 /** Dependencies: */
-use PHPUnit_Framework_TestCase;
+use Lousson\Container\AbstractContainerTest;
+use Lousson\Container\Callback\CallbackContainer;
 
 /**
- *  Abstract test case for implementations of Lousson\Context interfaces
+ *  A test case for the CallbackContainer implementation
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-abstract class AbstractContextTest extends PHPUnit_Framework_TestCase
+final class CallbackContainerTest
+    extends AbstractContainerTest
 {
     /**
-     *  The fully qualified name of the context container interface
+     *  Obtain the container instance to test
      *
-     *  @var string
+     *  The getContainer() method returns the container container instance
+     *  used in the tests, representing the $items provided.
+     *
+     *  @param  array               $items          The items to represent
+     *
+     *  @return \Lousson\Container\Callback\CallbackContainer
+     *          A container container instance is returned on success
      */
-    const I_CONTAINER = "Lousson\\Context\\AnyContextContainer";
-
-    /**
-     *  The fully qualified name of the context envelope interface
-     *
-     *  @var string
-     */
-    const I_ENVELOPE = "Lousson\\Context\\AnyContextEnvelope";
-
-    /**
-     *  The fully qualified name of the context exception interface
-     *
-     *  @var string
-     */
-    const I_EXCEPTION = "Lousson\\Context\\AnyContextException";
-
-    /**
-     *  Obtain a context callback mock
-     *
-     *  The getCallbackMock() method returns a mocking Closure that
-     *  offers (and validates) the common context callback API and, if
-     *  invoked correctly, returns the $value provided.
-     *
-     *  @param  mixed               $value          The value to return
-     *
-     *  @return \Closure
-     *          A closure instance is returned on success
-     */
-    protected function getCallbackMock($value)
+    public function getContainer(array $items = array())
     {
-        $value = $value;
-        $test = $this;
-        $callback = function($container, $name) use ($test, $value) {
-            $interface = AbstractContextTest::I_CONTAINER;
-            $test->assertInstanceOf($interface, $container);
-            $test->assertInternalType("string", $name);
-            return $value;
+        $callback = function($container, $name) use ($items) {
+            return isset($items[$name])? $items[$name]: null;
         };
 
-        return $callback;
+        $container = new CallbackContainer($callback);
+        return $container;
     }
 }
 

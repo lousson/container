@@ -32,48 +32,73 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Context\Callback\CallbackContextContainerTest class definition
+ *  Lousson\Container\AbstractContainerEntityTest class definition
  *
- *  @package    org.lousson.context
+ *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project
  *  @license    http://opensource.org/licenses/bsd-license.php New BSD License
  *  @author     Mathias J. Hennig <mhennig at quirkies.org>
  *  @filesource
  */
-namespace Lousson\Context\Callback;
+namespace Lousson\Container;
 
 /** Dependencies: */
-use Lousson\Context\AbstractContextContainerTest;
-use Lousson\Context\Callback\CallbackContextContainer;
+use PHPUnit_Framework_TestCase;
 
 /**
- *  A test case for the CallbackContextContainer implementation
+ *  Abstract test case for implementations of Lousson\Container interfaces
  *
- *  @since      lousson/Lousson_Context-0.1.0
- *  @package    org.lousson.context
+ *  @since      lousson/Lousson_Container-0.1.0
+ *  @package    org.lousson.container
  */
-final class CallbackContextContainerTest
-    extends AbstractContextContainerTest
+abstract class AbstractContainerEntityTest
+    extends PHPUnit_Framework_TestCase
 {
     /**
-     *  Obtain the container instance to test
+     *  The fully qualified name of the container container interface
      *
-     *  The getContainer() method returns the context container instance
-     *  used in the tests, representing the $items provided.
-     *
-     *  @param  array               $items          The items to represent
-     *
-     *  @return \Lousson\Context\Callback\CallbackContextContainer
-     *          A context container instance is returned on success
+     *  @var string
      */
-    public function getContainer(array $items = array())
+    const I_CONTAINER = "Lousson\\Container\\AnyContainer";
+
+    /**
+     *  The fully qualified name of the container aggregate interface
+     *
+     *  @var string
+     */
+    const I_AGGREGATE = "Lousson\\Container\\AnyContainerAggregate";
+
+    /**
+     *  The fully qualified name of the container exception interface
+     *
+     *  @var string
+     */
+    const I_EXCEPTION = "Lousson\\Container\\AnyContainerException";
+
+    /**
+     *  Obtain a container callback mock
+     *
+     *  The getCallbackMock() method returns a mocking Closure that
+     *  offers (and validates) the common container callback API and, if
+     *  invoked correctly, returns the $value provided.
+     *
+     *  @param  mixed               $value          The value to return
+     *
+     *  @return \Closure
+     *          A closure instance is returned on success
+     */
+    protected function getCallbackMock($value)
     {
-        $callback = function($container, $name) use ($items) {
-            return isset($items[$name])? $items[$name]: null;
+        $value = $value;
+        $test = $this;
+        $callback = function($container, $name) use ($test, $value) {
+            $interface = AbstractContainerEntityTest::I_CONTAINER;
+            $test->assertInstanceOf($interface, $container);
+            $test->assertInternalType("string", $name);
+            return $value;
         };
 
-        $container = new CallbackContextContainer($callback);
-        return $container;
+        return $callback;
     }
 }
 
