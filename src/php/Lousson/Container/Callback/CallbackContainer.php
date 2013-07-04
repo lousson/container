@@ -44,11 +44,9 @@ namespace Lousson\Container\Callback;
 
 /** Interfaces: */
 use Lousson\Container\AnyContainer;
-use Lousson\Container\AnyContainerAggregate;
 
 /** Dependencies: */
 use Lousson\Container\Generic\GenericContainerEntity;
-use Lousson\Container\Generic\GenericContainerAggregate;
 use Closure;
 
 /**
@@ -65,8 +63,7 @@ class CallbackContainer
      *  Create a container instance
      *
      *  The constructor requires the caller to provide a Closure $callback
-     *  for the container to invoke whenever an item is requested that does
-     *  not have been requested before.
+     *  for the container to invoke whenever an item is requested.
      *
      *  @param  Closure             $callback       The container callback
      */
@@ -92,13 +89,7 @@ class CallbackContainer
      */
     public function get($name)
     {
-        $name = (string) $name;
-
-        if (!isset($this->data[$name])) {
-            $aggregate = $this->agg($this, $name, $this->callback);
-            $this->data[$name] = $aggregate;
-        }
-
+        $aggregate = $this->agg($this, $name, $this->callback);
         return $aggregate;
     }
 
@@ -108,12 +99,5 @@ class CallbackContainer
      *  @var \Closure
      */
     private $callback;
-
-    /**
-     *  The container's data
-     *
-     *  @var array
-     */
-    private $data = array();
 }
 

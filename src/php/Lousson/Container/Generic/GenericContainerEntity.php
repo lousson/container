@@ -85,6 +85,8 @@ abstract class GenericContainerEntity
      */
     protected function agg(AnyContainer $container, $name, $value)
     {
+        $name = (string) $name;
+
         if ($value instanceof \Closure) try {
             $value = $value($container, $name);
         }
