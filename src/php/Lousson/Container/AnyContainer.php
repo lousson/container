@@ -43,12 +43,12 @@
 namespace Lousson\Container;
 
 /**
- *  An interface for container containers
+ *  An interface for containers
  *
- *  The Lousson\Container\AnyContainer interface declares an API
- *  for container containers. Those are used to e.g. manage dependencies
- *  when integrating packages with dependency injection frameworks, or
- *  when implementing custom dependency management solutions.
+ *  The Lousson\Container\AnyContainer interface declares an API for
+ *  containers. Those are used to e.g. manage dependencies when integrating
+ *  packages with dependency injection frameworks, or when implementing
+ *  custom dependency management solutions.
  *
  *  @since      lousson/Lousson_Container-0.1.0
  *  @package    org.lousson.container

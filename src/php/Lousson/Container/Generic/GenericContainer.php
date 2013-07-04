@@ -54,7 +54,7 @@ use Lousson\Container\Generic\GenericContainerEntity;
 use Lousson\Container\Error\ContainerRuntimeError;
 
 /**
- *  A generic container container implementation
+ *  A generic container implementation
  *
  *  @since      lousson/Lousson_Container-0.1.0
  *  @package    org.lousson.container

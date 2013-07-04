@@ -52,7 +52,7 @@ use Lousson\Container\Generic\GenericContainerAggregate;
 use Closure;
 
 /**
- *  A callback container container implementation
+ *  A callback container implementation
  *
  *  @since      lousson/Lousson_Container-0.1.0
  *  @package    org.lousson.container
