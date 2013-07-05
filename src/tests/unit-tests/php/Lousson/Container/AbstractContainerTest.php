@@ -56,13 +56,13 @@ abstract class AbstractContainerTest extends AbstractContainerEntityTest
     /**
      *  Obtain the container instance to test
      *
-     *  The getContainer() method returns the container container instance
-     *  used in the tests, representing the $items provided.
+     *  The getContainer() method returns the container instance used
+     *  in the tests, representing the $items provided.
      *
      *  @param  array               $items          The items to represent
      *
      *  @return \Lousson\Container\AnyContainer
-     *          A container container instance is returned on success
+     *          A container instance is returned on success
      */
     abstract public function getContainer(array $items = array());
 

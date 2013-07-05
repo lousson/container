@@ -58,13 +58,13 @@ final class CallbackContainerTest
     /**
      *  Obtain the container instance to test
      *
-     *  The getContainer() method returns the container container instance
+     *  The getContainer() method returns the callback container instance
      *  used in the tests, representing the $items provided.
      *
      *  @param  array               $items          The items to represent
      *
      *  @return \Lousson\Container\Callback\CallbackContainer
-     *          A container container instance is returned on success
+     *          A callback container instance is returned on success
      */
     public function getContainer(array $items = array())
     {

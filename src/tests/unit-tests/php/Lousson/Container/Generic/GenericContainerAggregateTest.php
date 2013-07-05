@@ -32,7 +32,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *  Lousson\Container\Generic\GenericContainerAggregateTest class definition
+ *  Lousson\Container\Generic\GenericContainerAggregateTest definition
  *
  *  @package    org.lousson.container
  *  @copyright  (c) 2013, The Lousson Project

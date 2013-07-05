@@ -55,7 +55,7 @@ abstract class AbstractContainerEntityTest
     extends PHPUnit_Framework_TestCase
 {
     /**
-     *  The fully qualified name of the container container interface
+     *  The fully qualified name of the container interface
      *
      *  @var string
      */
