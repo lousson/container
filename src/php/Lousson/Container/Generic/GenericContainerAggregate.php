@@ -303,7 +303,7 @@ class GenericContainerAggregate
         $aggregate = $this;
 
         if (!isset($this->value)) {
-            $aggregate = $this->agg(
+            $aggregate = $this->aggregate(
                 $this->container, $this->name, $fallback
             );
         }

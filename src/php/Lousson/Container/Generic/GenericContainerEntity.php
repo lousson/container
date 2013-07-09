@@ -63,8 +63,8 @@ abstract class GenericContainerEntity
     /**
      *  Aggregate a container aggregate
      *
-     *  The agg() method is used internally to create an instance of the
-     *  AnyContainerAggregate interface from the given $value.
+     *  The aggregate() method is used internally to create an instance
+     *  of the AnyContainerAggregate interface from the given $value.
      *
      *  If the given $value is a closure instance, this includes invoking
      *  it with the $container and $name as parameters (in that order) and
@@ -83,7 +83,7 @@ abstract class GenericContainerEntity
      *  @throws \Lousson\Container\AnyContainerException
      *          Raised in case aggregating the aggregate has failed
      */
-    protected function agg(AnyContainer $container, $name, $value)
+    protected function aggregate(AnyContainer $container, $name, $value)
     {
         $name = (string) $name;
 

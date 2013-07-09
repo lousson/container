@@ -89,7 +89,7 @@ class CallbackContainer
      */
     public function get($name)
     {
-        $aggregate = $this->agg($this, $name, $this->callback);
+        $aggregate = $this->aggregate($this, $name, $this->callback);
         return $aggregate;
     }
 

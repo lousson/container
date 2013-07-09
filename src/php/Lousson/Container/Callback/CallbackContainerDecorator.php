@@ -106,7 +106,10 @@ class CallbackContainerDecorator
      */
     public function get($name)
     {
-        $aggregate = $this->agg($this->container, $name, $this->callback);
+        $aggregate = $this->aggregate(
+            $this->container, $name, $this->callback
+        );
+
         return $aggregate;
     }
 

@@ -111,11 +111,11 @@ class GenericContainer
         $name = (string) $name;
 
         if (!isset($this->data[$name])) {
-            $this->data[$name] = $this->agg($this, $name, null);
+            $this->data[$name] = $this->aggregate($this, $name, null);
         }
         else if (!$this->data[$name] instanceof AnyContainerAggregate) {
-            $aggregate = $this->agg($this, $name, $this->data[$name]);
-            $this->data[$name] = $aggregate;
+            $item = &$this->data[$name];
+            $item = $this->aggregate($this, $name, $item);
         }
 
         return $this->data[$name];
