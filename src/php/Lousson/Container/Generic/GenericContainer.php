@@ -111,19 +111,14 @@ class GenericContainer
         $name = (string) $name;
 
         if (!isset($this->data[$name])) {
-            $glob = preg_replace("/\\.[^.]+\$/", ".*", $name);
-            $value = isset($this->data[$glob])? $this->data[$glob]: null;
+            $this->data[$name] = $this->agg($this, $name, null);
         }
-        else {
-            $value = $this->data[$name];
-        }
-
-        if (!$value instanceof AnyContainerAggregate) {
-            $value = $this->agg($this, $name, $value);
-            $this->data[$name] = $value;
+        else if (!$this->data[$name] instanceof AnyContainerAggregate) {
+            $aggregate = $this->agg($this, $name, $this->data[$name]);
+            $this->data[$name] = $aggregate;
         }
 
-        return $value;
+        return $this->data[$name];
     }
 
     /**
