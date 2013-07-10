@@ -79,9 +79,8 @@ final class GenericContainerTest
     /**
      *  Test the set() method
      *
-     *  The testSetPresent() method is a test case for the set() method
-     *  provided by GenericContainer instances, operating with a $name
-     *  that is associated with an existing item.
+     *  The testSet() method is a test case for the set() method provided
+     *  by GenericContainer instances.
      *
      *  The $items map is used to set up the container, and the retun value
      *  of the get() method (after set() has been invoked) is validated
@@ -100,7 +99,7 @@ final class GenericContainerTest
      *  @throws \Exception
      *          Raised in case of an implementation error
      */
-    public function testSetPresent(array $items, $name, $expected)
+    public function testSet(array $items, $name, $expected)
     {
         $container = $this->getContainer($items);
         $container->set($name, $expected);
@@ -108,27 +107,26 @@ final class GenericContainerTest
         $aggregate = $this->invokeGet($container, $name);
         $this->assertEquals(
             $expected, $aggregate->asIs(),
-            "The aggregate returned by GenericContainer::get() ".
+            "The aggregate returned by GenericContainer::get() must ".
             "hold the item set() before"
         );
     }
 
     /**
-     *  Test the set() method
+     *  Test the share() method
      *
-     *  The testSetPresent() method is a test case for the set() method
-     *  provided by GenericContainer instances, operating with a $name
-     *  that is not associated with an item.
+     *  The testShare() method is a test case for the share() method
+     *  provided by GenericContainer instances.
      *
      *  The $items map is used to set up the container, and the retun value
-     *  of the get() method (after set() has been invoked) is validated
+     *  of the get() method (after share() has been invoked) is validated
      *  against the $expected value.
      *
      *  @param  array               $items          The items to set up
      *  @param  string              $name           The name manipulate
      *  @param  mixed               $expected       The expected value
      *
-     *  @dataProvider               provideGetAbsentTestParameters
+     *  @dataProvider               provideGetPresentTestParameters
      *  @test
      *
      *  @throws \PHPUnit_Framework_AssertionFailedError
@@ -137,16 +135,69 @@ final class GenericContainerTest
      *  @throws \Exception
      *          Raised in case of an implementation error
      */
-    public function testSetAbsent(array $items, $name, $expected = null)
+    public function testShare(array $items, $name, $expected)
     {
         $container = $this->getContainer($items);
-        $container->set($name, $expected);
+        $callback = function($container, $name) use (&$expected) {
+            return $expected;
+        };
 
+        $container->share($name, $callback);
         $aggregate = $this->invokeGet($container, $name);
+
         $this->assertEquals(
             $expected, $aggregate->asIs(),
-            "The aggregate returned by GenericContainer::get() ".
-            "hold the item set() before"
+            "The aggregate returned by GenericContainer::get() must ".
+            "hold the result of the callback share()d before"
+        );
+
+        $expected = null;
+        $compare = $this->invokeGet($container, $name);
+
+        $this->assertSame(
+            $aggregate, $compare,
+            "The aggregate returned by GenericContainer::get() must ".
+            "always be the same instance for callbacks share()d before"
+        );
+    }
+
+    /**
+     *  Test the protect() method
+     *
+     *  The testProtect() method is a test case for the protect() method
+     *  provided by GenericContainer instances.
+     *
+     *  The $items map is used to set up the container, and the retun value
+     *  of the get() method (after protect() has been invoked) is validated
+     *  against the $expected value.
+     *
+     *  @param  array               $items          The items to set up
+     *  @param  string              $name           The name manipulate
+     *  @param  mixed               $expected       The expected value
+     *
+     *  @dataProvider               provideGetPresentTestParameters
+     *  @test
+     *
+     *  @throws \PHPUnit_Framework_AssertionFailedError
+     *          Raised in case an assertion has failed
+     *
+     *  @throws \Exception
+     *          Raised in case of an implementation error
+     */
+    public function testProtect(array $items, $name, $expected)
+    {
+        $container = $this->getContainer($items);
+        $callback = function() use (&$expected) {
+            return $expected;
+        };
+
+        $container->protect($name, $callback);
+        $aggregate = $this->invokeGet($container, $name);
+
+        $this->assertEquals(
+            $expected, call_user_func($aggregate->asIs()),
+            "The aggregate returned by GenericContainer::get() must ".
+            "hold the callback protect()ed before"
         );
     }
 
