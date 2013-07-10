@@ -121,11 +121,11 @@ class GenericContainer
     public function share($name, $value)
     {
         if ($value instanceof \Closure) {
-            $self = $this;
-            $value = function($container, $name) use ($value, $self) {
-                $value = $self->aggregate($container, $name, $value);
-                $self->set($name, $value);
-                return $value;
+            $value = function($self, $name) use ($value) {
+                $value = $value($self, $name);
+                $agg = new GenericContainerAggregate($self, $name, $value);
+                $self->set($name, $agg);
+                return $agg;
             };
         }
 
