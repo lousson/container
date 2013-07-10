@@ -67,7 +67,8 @@ class GenericContainer
      *  Create a container instance
      *
      *  The constructor allows the caller to provide an array of default
-     *  $data for the newly created container instance.
+     *  $data for the newly created container instance, where each item is
+     *  treaten as if it would have been assigned using the set() method.
      *
      *  @param  array               $data           The default data
      */
@@ -77,18 +78,79 @@ class GenericContainer
     }
 
     /**
-     *  Assign a container association
+     *  Update a container association
      *
      *  The set() method is used to setup the $value provided to be
-     *  associated with the given $name.
+     *  associated with the given $name. Note that some $value types will
+     *  trigger special behavior:
+     *
+     *- Closures
+     *  Any Closure callback is assumed to be some sort of factory for the
+     *  item to aggregate when get() is invoked. It is expected to support
+     *  being provided with the container itself as first, the passed name
+     *  as second argument and will get invoked whenever the get() method
+     *  is invoked with the associated $name
+     *
+     *- Lousson\Container\AnyContainerAggregate
+     *  Any aggregation instance is assumed to be final. When retrieved
+     *  via get(), it won't get wrapped in another aggregate
      *
      *  @param  string              $name           The name of the item
-     *  @param  mixed               $value          The value of the item
+     *  @param  mixed               $value          The value to assign
      */
     public function set($name, $value)
     {
         $name = (string) $name;
         $this->data[$name] = $value;
+    }
+
+    /**
+     *  Update a container association
+     *
+     *  A Closure $value assigned using the share() method is executed
+     *  only during the first invocation of get() using the same $name.
+     *  Afterwards, get() will always return an aggregate of the value
+     *  returned by the closure during that first invocation.
+     *
+     *  All other $value types, however, are handled exactly like if they
+     *  would have been provided via set().
+     *
+     *  @param  string              $name           The name of the item
+     *  @param  mixed               $value          The value to share
+     */
+    public function share($name, $value)
+    {
+        if ($value instanceof \Closure) {
+            $self = $this;
+            $value = function($container, $name) use ($value, $self) {
+                $value = $self->aggregate($container, $name, $value);
+                $self->set($name, $value);
+                return $value;
+            };
+        }
+
+        $this->set($name, $value);
+    }
+
+    /**
+     *  Update a container association
+     *
+     *  The protect() method is much like set(), except that any special
+     *  treatment of e.g. Closures or aggregates is disabled. This allows
+     *  the provisioning of raw object aggregations, without the use of
+     *  any builtin feature.
+     *
+     *  @param  string              $name           The name of the item
+     *  @param  mixed               $value          The value to protect
+     */
+    public function protect($name, $value)
+    {
+        if ($value instanceof \Closure ||
+                $value instanceof AnyContainerAggregate) {
+            $value = new GenericContainerAggregate($this, $name, $value);
+        }
+
+        $this->set($name, $value);
     }
 
     /**
@@ -109,16 +171,21 @@ class GenericContainer
     public function get($name)
     {
         $name = (string) $name;
+        $value = @$this->data[$name];
 
-        if (!isset($this->data[$name])) {
-            $this->data[$name] = $this->aggregate($this, $name, null);
+        if (!isset($value)) {
+            $value = $this->aggregate($this, $name, null);
+            $this->data[$name] = $value;
         }
-        else if (!$this->data[$name] instanceof AnyContainerAggregate) {
-            $item = &$this->data[$name];
-            $item = $this->aggregate($this, $name, $item);
+        elseif ($value instanceof \Closure) {
+            $value = $this->aggregate($this, $name, $value);
+        }
+        else if (!$value instanceof AnyContainerAggregate) {
+            $value = $this->aggregate($this, $name, $value);
+            $this->data[$name] = $value;
         }
 
-        return $this->data[$name];
+        return $value;
     }
 
     /**
