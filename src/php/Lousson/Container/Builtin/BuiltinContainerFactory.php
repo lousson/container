@@ -43,11 +43,13 @@
 namespace Lousson\Container\Builtin;
 
 /** Interfaces: */
+use Lousson\Config\AnyConfig;
 use Lousson\Container\AnyContainer;
 use ArrayAccess;
 
 /** Dependencies: */
 use Lousson\Container\Callback\CallbackContainer;
+use Lousson\Container\Config\ConfigContainer;
 use Lousson\Container\Generic\GenericContainer;
 
 /** Exceptions: */
@@ -101,6 +103,9 @@ class BuiltinContainerFactory
      *
      *- Instances of the ArrayAccess interface are wrapped and treaten
      *  like arrays
+     *
+     *- Instances of the AnyConfig interface are wrapped using a newly
+     *  created ConfigContainer instance
      *
      *- An absent or NULL value will result in the default container
      *  being returned
@@ -161,6 +166,9 @@ class BuiltinContainerFactory
         }
         else if ($base instanceof ArrayAccess) {
             $container = $this->getContainerFromPimple($base);
+        }
+        else if ($base instanceof AnyConfig) {
+            $container = new ConfigContainer($base);
         }
         else {
             $class = get_class($base);
