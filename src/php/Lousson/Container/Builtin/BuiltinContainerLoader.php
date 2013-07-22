@@ -50,6 +50,7 @@ use Lousson\Container\Generic\GenericContainerDecorator;
 use Lousson\Container\Generic\GenericContainer;
 
 /** Exceptions: */
+use Lousson\Container\Error\ContainerArgumentError;
 use Lousson\Container\Error\ContainerRuntimeError;
 
 /**
@@ -96,17 +97,11 @@ class BuiltinContainerLoader
             $container = new GenericContainerDecorator($base);
         }
         else {
-            $container = new GenericContainer;
+            $container = new GenericContainer();
         }
 
-        foreach ($files as $path) try {
+        foreach ($files as $path) {
             $this->bindContainer($path, $container);
-        }
-        catch (\Exception $error) {
-            $class = get_class($error);
-            $message = "Could not load container: Caught $class";
-            $code = ContainerRuntimeError::E_UNKNOWN;
-            throw new ContainerRuntimeError($message, $code, $error);
         }
 
         return $container;
@@ -115,18 +110,46 @@ class BuiltinContainerLoader
     /**
      *  Bind a container
      *
-     *  The bindContainer() method is used internally as a closure to
-     *  include the file at the given $path.
+     *  The bindContainer() method includes the file at the given $path in
+     *  a Closure context, passing on the given $container.
+     *
+     *  Note that a GenericContainerDecorator is used to enwrap the given
+     *  container - unless it's an instance of the GenericContainer class
+     *  anyway.
      *
      *  @param  string              $path           The path to include
-     *  @param  GenericContainer    $container      The container to set up
+     *  @param  AnyContainer        $container      The container to set up
      *
-     *  @throws \Exception
-     *          Raised in case something went wrong
+     *  @throws \Lousson\Container\Error\ContainerArgumentError
+     *          Raised in case the $path does not refer to a readable file
+     *
+     *  @throws \Lousson\Container\Error\ContainerRuntimeError
+     *          Raised in case provisioning the container has failed
      */
-    private function bindContainer($path, GenericContainer $container)
+    public function bindContainer($path, AnyContainer &$container)
     {
-        return include $path;
+        if (!$container instanceof GenericContainer) {
+            $container = new GenericContainerDecorator($container);
+        }
+
+        if (!is_file($path) || !is_readable($path)) {
+            $message = "Could not load container file: $path";
+            throw new ContainerArgumentError($message);
+        }
+
+        $callback = function($container, $path) {
+            include $path;
+        };
+
+        try {
+            $callback($container, $path);
+        }
+        catch (\Exception $error) {
+            $class = get_class($error);
+            $message = "Could not bind container: Caught $class";
+            $code = ContainerRuntimeError::E_UNKNOWN;
+            throw new ContainerRuntimeError($message, $code, $error);
+        }
     }
 }
 
