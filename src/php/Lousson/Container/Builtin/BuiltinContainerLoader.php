@@ -107,7 +107,7 @@ class BuiltinContainerLoader
             $message = "Could not load container: Caught $class";
             $code = ContainerRuntimeError::E_UNKNOWN;
             throw new ContainerRuntimeError($message, $code, $error);
-        };
+        }
 
         return $container;
     }
