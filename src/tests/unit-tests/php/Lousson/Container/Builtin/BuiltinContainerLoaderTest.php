@@ -106,7 +106,7 @@ final class BuiltinContainerLoaderTest extends PHPUnit_Framework_TestCase
     /**
      *  Test the loadContainer() method
      *
-     *  The testLoadContainerDecorator() method checks whether the builtin
+     *  The testLoadContainerError() method checks whether the builtin
      *  container loader's loadContainer() method does not violate the API
      *  declaration in case an exception is thrown by a file included.
      *
@@ -125,6 +125,55 @@ final class BuiltinContainerLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new BuiltinContainerLoader();
         $loader->loadContainer($this->file);
+    }
+
+    /**
+     *  Test the bindContainer() method
+     *
+     *  The testBindContainer() method is a smoke test for the builtin
+     *  container loader's bindContainer() method.
+     *
+     *  @throws \PHPUnit_Framework_AssertionFailedError
+     *          Raised in case an assertion has failed
+     *
+     *  @throws \Exception
+     *          Raised in case of an implementation error
+     */
+    public function testBindContainer()
+    {
+        file_put_contents($this->file, '<?php $container;');
+
+        $loader = new BuiltinContainerLoader();
+        $container = $this->getMock("Lousson\\Container\\AnyContainer");
+
+        $loader->bindContainer($this->file, $container);
+        $this->assertInstanceOf(
+            "Lousson\\Container\\Generic\\GenericContainerDecorator",
+            $container
+        );
+    }
+
+    /**
+     *  Test the bindContainer() method
+     *
+     *  The testBindContainerError() method checks whether the builtin
+     *  container loader's bindContainer() method does raise the correct
+     *  exception in case the file to bind is invalid.
+     *
+     *  @expectedException  Lousson\Container\Error\ContainerArgumentError
+     *  @test
+     *
+     *  @throws \Lousson\Container\Error\ContainerArgumentError
+     *          Raised in case the test is successful
+     *
+     *  @throws \Exception
+     *          Raised in case of an implementation error
+     */
+    public function testBindContainerError()
+    {
+        $loader = new BuiltinContainerLoader();
+        $container = $this->getMock("Lousson\\Container\\AnyContainer");
+        $loader->bindContainer("/foo/bar/baz", $container);
     }
 
     /**
