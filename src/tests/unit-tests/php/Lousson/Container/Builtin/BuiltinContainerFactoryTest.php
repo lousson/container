@@ -170,6 +170,27 @@ final class BuiltinContainerFactoryTest extends PHPUnit_Framework_TestCase
     /**
      *  Test the getContainer() method
      *
+     *  The testGetContainerFromConfig() method is a smoke test invoking
+     *  the factory's getContainer() method with an AnyConfig instance.
+     *
+     *  @throws \PHPUnit_Framework_AssertionFailedError
+     *          Raised in case ab assertion has failed
+     *
+     *  @throws \Exception
+     *          Raised in case of an implementation error
+     */
+    public function testGetContainerFromConfig()
+    {
+        $expected = "Lousson\\Container\\Config\\ConfigContainer";
+        $config = $this->getMock("Lousson\\Config\\AnyConfig");
+        $factory = new BuiltinContainerFactory();
+        $container = $factory->getContainer($config);
+        $this->assertInstanceOf($expected, $container);
+    }
+
+    /**
+     *  Test the getContainer() method
+     *
      *  The testGetContainerFromNull() method is a smoke test invoking
      *  the factory's getContainer() method with a NULL argument.
      *
