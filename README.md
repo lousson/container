@@ -18,7 +18,8 @@ PSR-0 compatible autoloader and some other Lousson packages:
 
 - **PHP 5.3.0+**:                           http://www.php.net/
 - **PSR-0 Autoloader**:                     http://pear.phix-project.org/
-- **Lousson_Exception 0.2.2+**:             http://pear.lousson.org/
+- **Lousson_Exception 1.0.0+**:             http://pear.lousson.org/
+- **Lousson_Config 1.0.0+**:                http://pear.lousson.org/
 
 However, there is also a bunch of tools the development and build
 processes rely on, e.g.:
