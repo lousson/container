@@ -154,6 +154,26 @@ class GenericContainer
     }
 
     /**
+     *  Alias a container item
+     *
+     *  @param	string              $name           The name of the item
+     *  @param	array               $aliases        The aliases to apply
+     */
+    public function alias($name, array $aliases)
+    {
+    	$name = (string) $name;
+
+    	if (!isset($this->data[$name])) {
+            $this->data[$name] = null;
+    	}
+
+    	foreach ($aliases as $value) {
+    		$value = (string) $value;
+    		$this->data[$value] = &$this->data[$name];
+    	}
+    }
+
+    /**
      *  Obtain a container aggregate
      *
      *  The get() method is used to obtain a container aggregate instance

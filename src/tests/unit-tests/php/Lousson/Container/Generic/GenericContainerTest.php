@@ -202,6 +202,40 @@ final class GenericContainerTest
     }
 
     /**
+     *  Test the alias() method
+     *
+     *  The testAlias() method is a test case for the alias() method
+     *  provided by GenericContainer instances.
+     *
+     *  @param  array               $items          The items to set up
+     *  @param  string              $name           The name manipulate
+     *  @param  mixed               $expected       The expected value
+     *
+     *  @dataProvider               provideGetPresentTestParameters
+     *  @test
+     *
+     *  @throws \PHPUnit_Framework_AssertionFailedError
+     *          Raised in case an assertion has failed
+     *
+     *  @throws \Exception
+     *          Raised in case of an implementation error
+     */
+    public function testAlias(array $items, $name, $expected)
+    {
+        $container = $this->getContainer($items);
+        
+        $key = md5(rand());
+        
+        $container->alias($name, array($key));
+        
+        $this->assertEquals(
+            $expected, $container->get($name)->asIs(),
+            "The aggregate returned by GenericContainer::get() must ".
+            "hold the alias()ed value"
+        );
+    }
+
+    /**
      *  Test the get() method
      *
      *  The testGetCallback() method is a test case for the get() method
