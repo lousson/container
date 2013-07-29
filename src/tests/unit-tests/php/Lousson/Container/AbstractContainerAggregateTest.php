@@ -257,6 +257,7 @@ abstract class AbstractContainerAggregateTest
 
         foreach ($data as $proto) {
             $parms[] = array(null, $proto[0], $proto[1]);
+            $parms[] = array($proto[0], null, $proto[1]);
         }
 
         return $parms;

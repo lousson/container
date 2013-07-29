@@ -155,5 +155,35 @@ final class GenericContainerAggregateTest
         $aggregate = $this->getAggregate($this);
         $aggregate->asObject("Exception");
     }
+
+    /**
+     *  Test the orGet() method
+     *
+     *  @param  mixed               $item           The input item
+     *  @param  mixed               $value          The value of the item
+     *  @param  mixed               $expected       The expected value
+     *
+     *  @dataProvider               provideTestOrFallbackParameters
+     *  @test
+     *
+     *  @throws \Exception
+     *          Raised in case of an internal error
+     */
+    public function testOrGet($item, $value, $expected)
+    {
+        $container = $this->getMock("Lousson\\Container\\AnyContainer");
+        $aggregate = new GenericContainerAggregate($container, $value, $expected);
+        $container
+        	->expects($this->any())
+        	->method("get")
+        	->will($this->returnValue($aggregate));
+
+        $aggregate = new GenericContainerAggregate($container, "foo", $item);
+        $value = $aggregate
+        	->orGet($value)
+        	->asIs();
+
+       $this->assertEquals($expected, $value);
+    }
 }
 

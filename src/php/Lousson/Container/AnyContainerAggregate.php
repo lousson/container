@@ -166,6 +166,16 @@ interface AnyContainerAggregate
     public function asResource();
 
     /**
+     *  Provide a specific item
+     *
+     *  @param  string              $name           The name of the item
+     *
+     *  @return \Lousson\Container\AnyContainerAggregate
+     *           A dependency aggregate is returned on success
+     */
+    public function orGet($name);
+
+    /**
      *  Provide a fallback item
      *
      *  The orFallback() method either returns the container aggregate
