@@ -101,7 +101,7 @@ class GenericContainer
     public function set($name, $value)
     {
         $name = (string) $name;
-        $this->data[$name] = &$value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -163,14 +163,12 @@ class GenericContainer
     {
         $name = (string) $name;
 
-        if (!isset($this->data[$name])) {
-            $null = null;
-            $this->data[$name] = &$null;
-        }
+        $callback = function($container, $void) use ($name) {
+            return $container->get($name);
+        };
 
         foreach ($aliases as $value) {
-            $value = (string) $value;
-            $this->data[$value] = &$this->data[$name];
+            $this->set($value, $callback);
         }
     }
 

@@ -223,13 +223,13 @@ final class GenericContainerTest
     public function testAlias(array $items, $name, $expected)
     {
         $container = $this->getContainer($items);
-        
+
         $key = md5(rand());
-        
+
         $container->alias($name, array($key));
-        
+
         $this->assertEquals(
-            $expected, $container->get($name)->asIs(),
+            $expected, $container->get($key)->asIs(),
             "The aggregate returned by GenericContainer::get() must ".
             "hold the alias()ed value"
         );
