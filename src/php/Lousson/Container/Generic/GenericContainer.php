@@ -101,7 +101,7 @@ class GenericContainer
     public function set($name, $value)
     {
         $name = (string) $name;
-        $this->data[$name] = $value;
+        $this->data[$name] = &$value;
     }
 
     /**
@@ -156,21 +156,22 @@ class GenericContainer
     /**
      *  Alias a container item
      *
-     *  @param	string              $name           The name of the item
-     *  @param	array               $aliases        The aliases to apply
+     *  @param  string              $name           The name of the item
+     *  @param  array               $aliases        The aliases to apply
      */
     public function alias($name, array $aliases)
     {
-    	$name = (string) $name;
+        $name = (string) $name;
 
-    	if (!isset($this->data[$name])) {
-            $this->data[$name] = null;
-    	}
+        if (!isset($this->data[$name])) {
+            $null = null;
+            $this->data[$name] = &$null;
+        }
 
-    	foreach ($aliases as $value) {
-    		$value = (string) $value;
-    		$this->data[$value] = &$this->data[$name];
-    	}
+        foreach ($aliases as $value) {
+            $value = (string) $value;
+            $this->data[$value] = &$this->data[$name];
+        }
     }
 
     /**
