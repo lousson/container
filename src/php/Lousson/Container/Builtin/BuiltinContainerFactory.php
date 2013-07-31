@@ -168,7 +168,7 @@ class BuiltinContainerFactory
             $container = $this->getContainerFromPimple($base);
         }
         else if ($base instanceof AnyConfig) {
-            $container = new ConfigContainer($base);
+            $container = $this->getContainerFromConfig($base);
         }
         else {
             $class = get_class($base);
@@ -196,6 +196,28 @@ class BuiltinContainerFactory
     {
         $callback = function($container, $name) use ($pimple) {
             $item = $pimple[(string) $name];
+            return $item;
+        };
+
+        $container = new CallbackContainer($callback);
+        return $container;
+    }
+
+    /**
+     *  Create a container based on config objects
+     *
+     *  The getContainerFromConfig() method is used internally to create
+     *  container instances based on AnyConfig implementations.
+     *
+     *  @param  AnyConfig           $config         The base object
+     *
+     *  @return \Lousson\Container\Callback\CallbackContainer
+     *          A callback container instance is returned on success
+     */
+    public function getContainerFromConfig(AnyConfig $config)
+    {
+        $callback = function($container, $name) use ($config) {
+            $item = $config->get($name, null);
             return $item;
         };
 
