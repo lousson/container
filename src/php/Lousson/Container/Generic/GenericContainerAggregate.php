@@ -289,13 +289,13 @@ class GenericContainerAggregate
      */
     public function orGet($name)
     {
-    	$aggregate = $this;
+        $aggregate = $this;
 
-    	if (!isset($this->value)) {
+        if (!isset($this->value)) {
             $aggregate = $this->container->get($name);
-    	}
+        }
 
-    	return $aggregate;
+        return $aggregate;
     }
 
     /**
