@@ -184,12 +184,12 @@ final class BuiltinContainerFactoryTest extends PHPUnit_Framework_TestCase
         $expected[] = "Lousson\\Container\\Callback\\CallbackContainer";
         $expected[] = "Lousson\\Container\\AnyContainerAggregate";
 
-        $methods = array("get");
+        $methods = array("getOption");
 
         $config = $this->getMock("Lousson\\Config\\AnyConfig", $methods);
         $config
             ->expects($this->once())
-            ->method("get")
+            ->method("getOption")
             ->will($this->returnValue(null));
 
         $factory = new BuiltinContainerFactory();

@@ -217,7 +217,7 @@ class BuiltinContainerFactory
     public function getContainerFromConfig(AnyConfig $config)
     {
         $callback = function($container, $name) use ($config) {
-            $item = $config->get($name, null);
+            $item = $config->getOption($name, null);
             return $item;
         };
 
