@@ -96,7 +96,8 @@ abstract class GenericContainerEntity
         }
         catch (\Exception $error) {
             $class = get_class($error);
-            $message = "Could not prepare \"$name\": Caught $class";
+            $message = "Could not prepare \"$name\": Caught $class " .
+                "with Message {$error->getMessage()}";
             $code = ContainerRuntimeError::E_UNKNOWN;
             throw new ContainerRuntimeError($message, $code, $error);
         }
